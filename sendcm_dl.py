@@ -77,3 +77,5 @@ else:
     print ("Fɪʟᴇ Lɪɴᴋ: ",url)
     print ("Dᴏᴡɴʟᴏᴀᴅ Lɪɴᴋ: ",dl_url)
     print ("\n")
+    import urllib
+    urllib.request.urlretrieve(dl_url,file_name)

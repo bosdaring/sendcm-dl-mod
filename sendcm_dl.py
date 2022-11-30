@@ -2,6 +2,10 @@ from bs4 import BeautifulSoup
 import cloudscraper
 from re import findall
 from time import sleep
+#The following code will download a file using pycurl and display the current progress (as text):
+import pycurl
+# for displaying the output text
+from sys import stderr as STREAM
 
 # Accepting Sendcm URL from User
 url = input("Enter your Sendcm URL : ")
@@ -77,5 +81,23 @@ else:
     print ("Fɪʟᴇ Lɪɴᴋ: ",url)
     print ("Dᴏᴡɴʟᴏᴀᴅ Lɪɴᴋ: ",dl_url)
     print ("\n")
-    import urllib
-    urllib.request.urlretrieve(dl_url,file_name)
+kb = 1024
+    # callback function for c.XFERINFOFUNCTION
+def status(download_t, download_d, upload_t, upload_d):
+    STREAM.write('Downloading: {}/{} kiB ({}%)\r'.format(
+        str(int(download_d/kb)),
+        str(int(download_t/kb)),
+        str(int(download_d/download_t*100) if download_t > 0 else 0)
+    ))
+    STREAM.flush()
+
+# download file using pycurl
+with open(file_name, 'wb') as f:
+    c = pycurl.Curl()
+    c.setopt(c.URL, dl_url)
+    c.setopt(c.WRITEDATA, f)
+    # display progress
+    c.setopt(c.NOPROGRESS, False)
+    c.setopt(c.XFERINFOFUNCTION, status)
+    c.perform()
+    c.close()

@@ -101,3 +101,5 @@ with open(file_name, 'wb') as f:
     c.setopt(c.XFERINFOFUNCTION, status)
     c.perform()
     c.close()
+# keeps progress onscreen after download completes
+print()
